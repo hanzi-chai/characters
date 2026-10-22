@@ -2,7 +2,7 @@ import { mkdir } from "node:fs/promises";
 import { sha256 } from "../src/integrity";
 await mkdir("dist", { recursive: true });
 const archive = "dist/unicode-18.0.0-hanzi-pinyin.tar.gz";
-const result = Bun.spawn(["tar", "-czf", archive, "README.md", "NOTICE.md", "package.json", ".gitignore", "sources.lock.json", "src", "scripts", "test", "research", "sources", "data"], {
+const result = Bun.spawn(["tar", "-czf", archive, "README.md", "AGENTS.md", "package.json", ".gitignore", "sources.lock.json", "src", "scripts", "test", "sources", "data"], {
   env: { ...process.env, COPYFILE_DISABLE: "1" }, stdout: "inherit", stderr: "inherit",
 });
 if (await result.exited !== 0) throw new Error("Packaging failed");

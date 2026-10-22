@@ -1,6 +1,7 @@
 import { test, expect } from "bun:test";
 import { toNumeric, toNumericReading, toCnsNumeric } from "../src/pinyin";
-import { parseUnicodeData, propertySet, hanRepertoire, cnsCodeFromTSource } from "../src/unicode";
+import { parseUnicodeData, propertySet, hanRepertoire, cnsCodeFromTSource, singleHanDecomposition, type UnicodeChar } from "../src/unicode";
+import { withCoverage } from "../src/report";
 
 test("tones, NFC/NFD, ü, ê and syllabic nasals", () => {
   for (const [raw, expected] of [["zhāng", "zhang1"], ["nǚ", "nv3"], ["lǜ", "lv4"], ["lu:4", "lv4"], ["ḿ", "m2"], ["ń", "n2"], ["n̄", "n1"], ["ê̌", "ê3"], ["de", "de5"], ["ma0", "ma5"], ["ZHANG1", "zhang1"]]) {
@@ -34,4 +35,32 @@ test("Unicode First/Last ranges expand and compatibility ideographs deduplicate"
   const unified = propertySet("3400..3402; Unified_Ideograph # comment\nFA11; Unified_Ideograph", "Unified_Ideograph");
   expect(hanRepertoire(data, unified)).toEqual([0x3007, 0x3400, 0x3401, 0x3402, 0xfa11]);
   expect(data.has(0x3403)).toBe(false);
+});
+test("requested blocks include symbols of every script, but exclude unassigned slots", () => {
+  const entries: UnicodeChar[] = [
+    { cp: 0x3007, name: "IDEOGRAPHIC NUMBER ZERO", category: "Nl", decomposition: "" },
+    { cp: 0x4e00, name: "CJK UNIFIED IDEOGRAPH-4E00", category: "Lo", decomposition: "" },
+    { cp: 0x3000, name: "IDEOGRAPHIC SPACE", category: "Zs", decomposition: "<wide> 0020" },
+    { cp: 0x3200, name: "PARENTHESIZED HANGUL KIYEOK", category: "So", decomposition: "<compat> 0028 1100 0029" },
+    { cp: 0x1f200, name: "SQUARE HIRAGANA HOKA", category: "So", decomposition: "<square> 307B 304B" },
+    { cp: 0x41, name: "LATIN CAPITAL LETTER A", category: "Lu", decomposition: "" },
+  ];
+  const blocks = [
+    { start: 0x3000, end: 0x303f, name: "CJK Symbols and Punctuation" },
+    { start: 0x3200, end: 0x32ff, name: "Enclosed CJK Letters and Months" },
+    { start: 0x1f200, end: 0x1f2ff, name: "Enclosed Ideographic Supplement" },
+  ];
+  expect(hanRepertoire(new Map(entries.map(e => [e.cp, e])), new Set([0x4e00]), blocks)).toEqual([0x3000, 0x3007, 0x3200, 0x4e00, 0x1f200]);
+});
+test("formatting decomposition supplies one Han reading, not a symbol name or multi-character phrase", () => {
+  const entry = (decomposition: string): UnicodeChar => ({ cp: 0x32a4, name: "CIRCLED IDEOGRAPH HIGH", category: "So", decomposition });
+  const unified = new Set([0x4e00, 0x4e0a]);
+  expect(singleHanDecomposition(entry("<circle> 4E0A"), unified)).toBe(0x4e0a);
+  expect(singleHanDecomposition(entry("<compat> 4E00"), unified)).toBe(0x4e00);
+  expect(singleHanDecomposition(entry("<wide> 0020"), unified)).toBeUndefined();
+  expect(singleHanDecomposition(entry("<compat> 0028 4E00 0029"), unified)).toBeUndefined();
+});
+test("coverage refresh preserves authored README sections and rejects broken markers", () => {
+  expect(withCoverage("intro\n<!-- coverage:start -->\nold\n<!-- coverage:end -->\nsource notes", "new")).toBe("intro\n<!-- coverage:start -->\n\nnew\n\n<!-- coverage:end -->\nsource notes");
+  expect(() => withCoverage("no markers", "new")).toThrow();
 });

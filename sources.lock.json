@@ -6,12 +6,6 @@
   "wanxiangCommit": "429bca38cec288ca9f6c322333908ce17adb0885",
   "files": [
     {
-      "path": "research/tr38-41.html",
-      "bytes": 282423,
-      "sha256": "7120b84a2c34007a15414e4eaf53e3d8b5bca4b43e8742d19fdbbbe4db702085",
-      "url": "https://www.unicode.org/reports/tr38/tr38-41.html"
-    },
-    {
       "path": "sources/cns11643-mirror/MapingTables/Unicode/CNS2UNICODE_Unicode 2.txt",
       "bytes": 658550,
       "sha256": "7e4476545d064d333444260493eb4497951e3741cfef674b4facd2d51b0e5434",
@@ -430,6 +424,12 @@
       "bytes": 726700,
       "sha256": "4ccfd34b08ac7b9c14353f6668ba43e3796d85c4cdce7952b635be16015aafa2",
       "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_Variants.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/tr38-41.html",
+      "bytes": 282423,
+      "sha256": "7120b84a2c34007a15414e4eaf53e3d8b5bca4b43e8742d19fdbbbe4db702085",
+      "url": "https://www.unicode.org/reports/tr38/tr38-41.html"
     },
     {
       "path": "sources/wanxiang/LICENSE",

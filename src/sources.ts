@@ -13,7 +13,7 @@ export const downloads = [
     path: `sources/wanxiang/${name.split("/").at(-1)}`,
     url: `https://raw.githubusercontent.com/amzxyz/rime-wanxiang/${wanxiangCommit}/${name}`,
   })),
-  { path: "research/tr38-41.html", url: "https://www.unicode.org/reports/tr38/tr38-41.html" },
+  { path: "sources/unicode-18.0.0/tr38-41.html", url: "https://www.unicode.org/reports/tr38/tr38-41.html" },
   ...["Properties.zip", "MapingTables.zip", "release.txt"].map(name => ({
     path: `sources/cns11643/${name}`, url: `https://data.cns11643.gov.tw/opendata/${name}`,
   })),

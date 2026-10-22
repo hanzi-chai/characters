@@ -1,18 +1,18 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, rm } from "node:fs/promises";
 import { codepoint } from "../src/pinyin";
-import { parseBlocks, parseUnicodeData, propertySet, hanRepertoire } from "../src/unicode";
+import { parseBlocks, parseUnicodeData, propertySet, hanRepertoire, includedBlocks, singleHanDecomposition } from "../src/unicode";
 import { loadReadings, type Evidence } from "../src/readings";
 import { sha256, verifySources } from "../src/integrity";
 import { unicodeVersion } from "../src/sources";
+import { renderCoverage, withCoverage } from "../src/report";
 
 const lock = await verifySources();
 const prefix = `sources/unicode-${unicodeVersion}/`;
 const unicode = parseUnicodeData(await Bun.file(prefix + "UnicodeData.txt").text());
 const unified = propertySet(await Bun.file(prefix + "PropList.txt").text(), "Unified_Ideograph");
-const han = propertySet(await Bun.file(prefix + "Scripts.txt").text(), "Han");
 const blocks = parseBlocks(await Bun.file(prefix + "Blocks.txt").text());
-const repertoire = hanRepertoire(unicode, unified);
-const target = new Set(repertoire);
+for (const selected of includedBlocks) if (!blocks.some(block => block.name === selected.name)) throw new Error(`Missing Unicode block: ${selected.name}`);
+const repertoire = hanRepertoire(unicode, unified, blocks);
 const { evidence, rejected, corrections, mappingConflicts } = await loadReadings();
 
 export interface Row {
@@ -30,11 +30,11 @@ function rowFor(cp: number, visiting = new Set<number>()): Row {
   let selected = allEvidence.filter(e => !correction || correction.has(e.pinyin));
   const excludedByCorrection = allEvidence.filter(e => correction && !correction.has(e.pinyin));
   let status: Row["status"] = selected.length ? "direct" : "missing";
-  // Only the explicit, single-character UnicodeData decomposition for CJK
-  // compatibility ideographs is used. No semantic, simplified or visual guesses.
+  // Accept only an explicit Unicode decomposition into one unified Han
+  // character, including radical and enclosure formatting decompositions.
   const entry = unicode.get(cp)!;
-  if (!selected.length && entry.name.startsWith("CJK COMPATIBILITY IDEOGRAPH-") && /^[0-9A-F]{4,6}$/.test(entry.decomposition)) {
-    const mappedCp = parseInt(entry.decomposition, 16);
+  const mappedCp = singleHanDecomposition(entry, unified);
+  if (!selected.length && mappedCp !== undefined) {
     if (unicode.has(mappedCp)) {
       const mapped = rowFor(mappedCp, new Set(visiting));
       if (mapped.status !== "missing") {
@@ -54,10 +54,6 @@ function rowFor(cp: number, visiting = new Set<number>()): Row {
   return row;
 }
 const rows = repertoire.map(cp => rowFor(cp));
-// Related Han symbols and strokes are listed separately to make the scope explicit.
-const strokes = blocks.filter(b => b.name === "CJK Strokes");
-const related = [...new Set([...han, ...[...unicode.keys()].filter(cp => strokes.some(b => cp >= b.start && cp <= b.end))])]
-  .filter(cp => !target.has(cp) && unicode.has(cp)).sort((a, b) => a - b).map(cp => rowFor(cp));
 await mkdir("data", { recursive: true });
 function tsv(data: Row[]): string {
   return "codepoint\tchar\tpinyin\tdefault\tstatus\tblock\tsources\n" + data.map(row => [
@@ -94,21 +90,20 @@ const outputs: Record<string, string> = {
   "data/pinyin.json": JSON.stringify(Object.fromEntries(rows.map(row => [row.char, row.pinyin])), null, 2) + "\n",
   "data/evidence.jsonl": rows.map(row => JSON.stringify(row)).join("\n") + "\n",
   "data/missing.tsv": tsv(unknown),
-  "data/related-han-symbols.tsv": tsv(related),
   "data/supplement-only.tsv": tsv(supplemental),
   "data/source-disagreements.tsv": tsv(disagreements),
   "data/rejected-readings.jsonl": rejected.map(row => JSON.stringify(row)).join("\n") + "\n",
   "data/cns-mapping-conflicts.json": JSON.stringify(mappingConflicts, null, 2) + "\n",
 };
 const summary = {
-  schema: 1, unicodeVersion, sourceDate: lock.collectedOn,
-  scope: "Unified_Ideograph + assigned CJK COMPATIBILITY IDEOGRAPH-* + U+3007 (deduplicated)",
+  schema: 2, unicodeVersion, sourceDate: lock.collectedOn,
+  scope: "Unified_Ideograph + U+3007 + assigned characters in the eight included CJK blocks (deduplicated)",
+  includedBlocks,
   total: rows.length, known: rows.length - unknown.length, missing: unknown.length,
   coveragePercent: Number((100 * (rows.length - unknown.length) / rows.length).toFixed(4)),
   direct: rows.filter(row => row.status === "direct").length,
   inheritedViaUnicodeDecomposition: rows.filter(row => row.status === "unicode-decomposition").length,
   polyphonic: rows.filter(row => row.pinyin.length > 1).length,
-  relatedHanSymbols: related.length,
   supplementOnly: supplemental.length,
   sourceDisagreements: disagreements.length,
   rejectedReadings: rejected.length,
@@ -119,16 +114,9 @@ const summary = {
   byBlock, bySource,
 };
 outputs["data/coverage.json"] = JSON.stringify(summary, null, 2) + "\n";
-outputs["data/COVERAGE.md"] = `# Unicode ${unicodeVersion} 汉字拼音覆盖率\n\n` +
-  `字符总数 **${summary.total}**；有读音 **${summary.known}**（${summary.coveragePercent}%）；未查到 **${summary.missing}**，记作 \`xxx\`。\n\n` +
-  `直接来源 ${summary.direct} 字；Unicode 兼容映射补音 ${summary.inheritedViaUnicodeDecomposition} 字；多读音 ${summary.polyphonic} 字；仅补充来源收录 ${summary.supplementOnly} 字。\n\n` +
-  "| 区块 | 字数 | 有读音 | xxx | 读音覆盖率 |\n|---|---:|---:|---:|---:|\n" +
-  byBlock.map(b => `| ${b.block} | ${b.total} | ${b.known} | ${b.missing} | ${b.coverage}% |`).join("\n") + "\n\n" +
-  "## 来源收录量\n\n同一汉字可以被多个来源收录，不能将下列数字相加。统计包含兼容映射后的归属，因此可能高于原始文件行数。\n\n| 来源 | 汉字数 | 不同字音对 |\n|---|---:|---:|\n" +
-  bySource.map(s => `| ${s.source} | ${s.characters} | ${s.readings} |`).join("\n") + "\n\n" +
-  `未接受的原始读音记录 ${summary.rejectedReadings} 条，见 \`rejected-readings.jsonl\`；包含已由另一官方表成功回退的异常数字拼音。同字不一定缺音。\n\n` +
-  `来源间读音集合不同的 ${summary.sourceDisagreements} 字见 \`source-disagreements.tsv\`；集合不同可能只是收录详略、古今或地区差异。全字库与 Unihan 的 ${summary.cnsMappingConflicts} 处既有码点映射差异见 \`cns-mapping-conflicts.json\`；不自动覆盖这些已分配码点的全字库映射。\n`;
 for (const [path, text] of Object.entries(outputs)) await Bun.write(path, text);
+await Bun.write("README.md", withCoverage(await Bun.file("README.md").text(), renderCoverage(summary)));
+for (const obsolete of ["data/COVERAGE.md", "data/related-han-symbols.tsv"]) await rm(obsolete, { force: true });
 const checksums = Object.entries(outputs).map(([path, text]) => ({ path, bytes: Buffer.byteLength(text), sha256: sha256(text) }));
 await Bun.write("data/manifest.json", JSON.stringify({ schema: 1, unicodeVersion, sourceLockSha256: sha256(await Bun.file("sources.lock.json").text()), files: checksums }, null, 2) + "\n");
 console.log(JSON.stringify({ total: summary.total, known: summary.known, missing: summary.missing, coveragePercent: summary.coveragePercent, inherited: summary.inheritedViaUnicodeDecomposition, rejected: summary.rejectedReadings }, null, 2));

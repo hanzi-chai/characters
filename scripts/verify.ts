@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { sha256, verifySources } from "../src/integrity";
 import { parseUnicodeData, cnsCodeFromTSource } from "../src/unicode";
 import { toNumericReading, toCnsNumeric } from "../src/pinyin";
+import { renderCoverage, withCoverage } from "../src/report";
 
 await verifySources();
 const manifest = await Bun.file("data/manifest.json").json();
@@ -11,8 +12,8 @@ for (const item of manifest.files) {
   assert.equal(bytes.length, item.bytes, item.path);
   assert.equal(sha256(bytes), item.sha256, item.path);
 }
-// Independent coverage oracle: all codepoints actually present anywhere in
-// Unihan, plus ideographic zero. Do not reuse the build's PropList enumeration.
+// Independent oracle: Unihan + zero, then assigned codepoints in the eight
+// requested ranges. Do not reuse the build's PropList or block configuration.
 const expected = new Set<number>([0x3007]);
 for (const name of ["DictionaryIndices", "DictionaryLikeData", "IRGSources", "NumericValues", "OtherMappings", "RadicalStrokeCounts", "Readings", "Variants"]) {
   for (const line of (await Bun.file(`sources/unicode-18.0.0/Unihan_${name}.txt`).text()).split("\n")) {
@@ -22,6 +23,13 @@ for (const name of ["DictionaryIndices", "DictionaryLikeData", "IRGSources", "Nu
 }
 assert.equal(expected.size, 103000, "Unicode18 repertoire oracle changed");
 const unicode = parseUnicodeData(await Bun.file("sources/unicode-18.0.0/UnicodeData.txt").text());
+const requestedRanges = [
+  [0x2e80, 0x2eff], [0x2f00, 0x2fdf], [0x31c0, 0x31ef],
+  [0xf900, 0xfaff], [0x2f800, 0x2fa1f], [0x3000, 0x303f],
+  [0x3200, 0x32ff], [0x1f200, 0x1f2ff],
+];
+for (const cp of unicode.keys()) if (requestedRanges.some(([start, end]) => cp >= start && cp <= end)) expected.add(cp);
+assert.equal(expected.size, 103750, "Unicode18 expanded repertoire changed");
 const lines = (await Bun.file("data/pinyin.tsv").text()).replace(/\r?\n$/, "").split("\n");
 assert.equal(lines.shift(), "codepoint\tchar\tpinyin\tdefault\tstatus\tblock\tsources");
 const seen = new Set<number>();
@@ -58,6 +66,10 @@ assert(json["了"].includes("le5"));
 assert(json[String.fromCodePoint(0x2b81e)]);
 assert(json[String.fromCodePoint(0x33479)]);
 assert(!json[String.fromCodePoint(0x3347a)], "Reserved extension J tail must not be included");
+for (const cp of [0x2e80, 0x2f00, 0x31c0, 0xf900, 0x2f800, 0x3000, 0x3200, 0x1f200]) assert(json[String.fromCodePoint(cp)], `Missing requested block: ${cp.toString(16)}`);
+for (const cp of [0x2e9a, 0x2fd6, 0x321f, 0x1f203]) assert(!json[String.fromCodePoint(cp)], `Reserved codepoint included: ${cp.toString(16)}`);
+assert(json["⼀"].includes("yi1"));
+assert(json["㊤"].includes("shang4"));
 
 // Validate EVERY retained evidence pointer, including the three-way CNS join.
 const cache = new Map<string, string[]>();
@@ -74,7 +86,7 @@ for (const line of evidenceText.trimEnd().split("\n")) {
   assert.equal(row.pinyin.join(","), json[row.char].join(","));
   if (row.status === "unicode-decomposition") {
     const entry = unicode.get(row.char.codePointAt(0))!;
-    assert.equal(entry.decomposition, row.evidence[0].via.slice(2));
+    assert.equal(parseInt(entry.decomposition.replace(/^<[^>]+>\s*/, ""), 16), parseInt(row.evidence[0].via.slice(2), 16));
   }
   for (const e of row.evidence) {
     const text = await sourceLine(e.file, e.line);
@@ -105,4 +117,8 @@ for (const line of evidenceText.trimEnd().split("\n")) {
 const coverage = await Bun.file("data/coverage.json").json();
 assert.equal(coverage.total, expected.size); assert.equal(coverage.known, known); assert.equal(coverage.missing, missing);
 assert.equal(coverage.byBlock.reduce((sum: number, b: any) => sum + b.total, 0), expected.size);
+const readme = await Bun.file("README.md").text();
+assert.equal(withCoverage(readme, renderCoverage(coverage)), readme, "README coverage is out of date");
+assert(!await Bun.file("data/COVERAGE.md").exists(), "Coverage belongs in README");
+assert(!await Bun.file("data/related-han-symbols.tsv").exists(), "Requested symbols belong in the main table");
 console.log(`Verified ${expected.size} characters; ${known} known, ${missing} xxx; ${evidenceRecords} evidence pointers (${cnsRecords} CNS joins); all checksums match.`);

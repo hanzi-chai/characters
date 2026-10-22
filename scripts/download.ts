@@ -41,7 +41,7 @@ await mkdir("sources/cns11643/MapingTables", { recursive: true });
 await run(["unzip", "-oq", "sources/cns11643/Properties.zip", "CNS_phonetic.txt", "CNS_pinyin_1.txt", "CNS_pinyin_2.txt", "-d", "sources/cns11643/Properties"]);
 await run(["unzip", "-oq", "sources/cns11643/MapingTables.zip", "Unicode/*", "-d", "sources/cns11643/MapingTables"]);
 
-const paths = [...await filesIn("sources"), "research/tr38-41.html"].sort();
+const paths = await filesIn("sources");
 const files: SourceLock["files"] = [];
 for (const path of paths) {
   const bytes = new Uint8Array(await Bun.file(path).arrayBuffer());

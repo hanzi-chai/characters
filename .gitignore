@@ -6,7 +6,3 @@ node_modules/
 /sources/
 /data/
 /dist/
-
-# Only the hand-written source notes belong in version control.
-/research/*
-!/research/SOURCES.md
