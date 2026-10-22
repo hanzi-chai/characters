@@ -1,0 +1,453 @@
+{
+  "schema": 1,
+  "unicodeVersion": "18.0.0",
+  "collectedOn": "2026-10-22",
+  "pinyinCommit": "9e5e9bdfe8add694300e0cc93a27b803b68377f9",
+  "wanxiangCommit": "429bca38cec288ca9f6c322333908ce17adb0885",
+  "files": [
+    {
+      "path": "research/tr38-41.html",
+      "bytes": 282423,
+      "sha256": "7120b84a2c34007a15414e4eaf53e3d8b5bca4b43e8742d19fdbbbe4db702085",
+      "url": "https://www.unicode.org/reports/tr38/tr38-41.html"
+    },
+    {
+      "path": "sources/cns11643-mirror/MapingTables/Unicode/CNS2UNICODE_Unicode 2.txt",
+      "bytes": 658550,
+      "sha256": "7e4476545d064d333444260493eb4497951e3741cfef674b4facd2d51b0e5434",
+      "url": "https://raw.githubusercontent.com/yintzuyuan/CNS11643-OpenData/27a0ea7451215a4b4e5bad0fa1640977630e4b00/Tables/MapingTables/Unicode/CNS2UNICODE_Unicode%202.txt"
+    },
+    {
+      "path": "sources/cns11643-mirror/MapingTables/Unicode/CNS2UNICODE_Unicode 3.txt",
+      "bytes": 9064,
+      "sha256": "d4373665e36f404f102470dbec9d5528eedae533daf227484d46706b73729a88",
+      "url": "https://raw.githubusercontent.com/yintzuyuan/CNS11643-OpenData/27a0ea7451215a4b4e5bad0fa1640977630e4b00/Tables/MapingTables/Unicode/CNS2UNICODE_Unicode%203.txt"
+    },
+    {
+      "path": "sources/cns11643-mirror/MapingTables/Unicode/CNS2UNICODE_Unicode BMP.txt",
+      "bytes": 418652,
+      "sha256": "c26182dc5e971371924fbc5fa54c7b63a428115f49c38e34556fb84937047955",
+      "url": "https://raw.githubusercontent.com/yintzuyuan/CNS11643-OpenData/27a0ea7451215a4b4e5bad0fa1640977630e4b00/Tables/MapingTables/Unicode/CNS2UNICODE_Unicode%20BMP.txt"
+    },
+    {
+      "path": "sources/cns11643-mirror/Properties/CNS_phonetic.txt",
+      "bytes": 1964151,
+      "sha256": "7c55a6695021d459e96baf46c03eaeaa4d6814fa5ed583616e2646a3c8a4b8bd",
+      "url": "https://raw.githubusercontent.com/yintzuyuan/CNS11643-OpenData/27a0ea7451215a4b4e5bad0fa1640977630e4b00/Tables/Properties/CNS_phonetic.txt"
+    },
+    {
+      "path": "sources/cns11643-mirror/Properties/CNS_pinyin_1.txt",
+      "bytes": 52141,
+      "sha256": "84f4d968b66844d48ee46a368cd20881e5a067e0905d718ac1a3fd5a762fb2a9",
+      "url": "https://raw.githubusercontent.com/yintzuyuan/CNS11643-OpenData/27a0ea7451215a4b4e5bad0fa1640977630e4b00/Tables/Properties/CNS_pinyin_1.txt"
+    },
+    {
+      "path": "sources/cns11643-mirror/Properties/全字庫屬性資料說明文件.txt",
+      "bytes": 4481,
+      "sha256": "85e549c2ae092e51530c8e5a739ad5e62670fe478b4b1c820c22692b2249f638",
+      "url": "https://raw.githubusercontent.com/yintzuyuan/CNS11643-OpenData/27a0ea7451215a4b4e5bad0fa1640977630e4b00/Tables/Properties/%E5%85%A8%E5%AD%97%E5%BA%AB%E5%B1%AC%E6%80%A7%E8%B3%87%E6%96%99%E8%AA%AA%E6%98%8E%E6%96%87%E4%BB%B6.txt"
+    },
+    {
+      "path": "sources/cns11643/LICENSE-government.html",
+      "bytes": 484109,
+      "sha256": "9fadf5cd316a62eb1ca2f40b60df8d58b23db20a59c4b33b13401ccad7275b63",
+      "url": "https://data.gov.tw/license"
+    },
+    {
+      "path": "sources/cns11643/LICENSE.html",
+      "bytes": 9758,
+      "sha256": "e3346299c3b3ef276ec7e28c43a2cae672f4a50c36ccbc5c4274155a3eb3c9f3",
+      "url": "https://www.cns11643.gov.tw/pageView.jsp?ID=59"
+    },
+    {
+      "path": "sources/cns11643/MapingTables.zip",
+      "bytes": 809868,
+      "sha256": "4502fcf7b433d679dee51127298929543ec7f4aa99be93cd219df1552bc3d2bf",
+      "url": "https://data.cns11643.gov.tw/opendata/MapingTables.zip"
+    },
+    {
+      "path": "sources/cns11643/MapingTables/Unicode/CNS2UNICODE_Unicode 15.txt",
+      "bytes": 287701,
+      "sha256": "baf46bb1606872b59ad90e580e0d729d250a1bc3ff3c9f9d47ef8b7e89e73893",
+      "url": "https://data.cns11643.gov.tw/opendata/MapingTables.zip#Unicode/CNS2UNICODE_Unicode 15.txt"
+    },
+    {
+      "path": "sources/cns11643/MapingTables/Unicode/CNS2UNICODE_Unicode 2.txt",
+      "bytes": 658551,
+      "sha256": "b99bc9520f006470f54263919db615d60c571f890b667786450ccfa7ef79f70a",
+      "url": "https://data.cns11643.gov.tw/opendata/MapingTables.zip#Unicode/CNS2UNICODE_Unicode 2.txt"
+    },
+    {
+      "path": "sources/cns11643/MapingTables/Unicode/CNS2UNICODE_Unicode 3.txt",
+      "bytes": 9121,
+      "sha256": "0599b2c1c9bc7670dd125e7e2dea923e206423b8499cefb66bed4a4a82d7ab2a",
+      "url": "https://data.cns11643.gov.tw/opendata/MapingTables.zip#Unicode/CNS2UNICODE_Unicode 3.txt"
+    },
+    {
+      "path": "sources/cns11643/MapingTables/Unicode/CNS2UNICODE_Unicode BMP.txt",
+      "bytes": 418653,
+      "sha256": "34fbe0e494a803680440c5cfd19d0ddf92da6766470e9439a4ef311cb502e595",
+      "url": "https://data.cns11643.gov.tw/opendata/MapingTables.zip#Unicode/CNS2UNICODE_Unicode BMP.txt"
+    },
+    {
+      "path": "sources/cns11643/Properties.zip",
+      "bytes": 3158491,
+      "sha256": "3d56ef14cc8099893245dac58fe4718d2fa64812b9159352a98a4588ad3efa5c",
+      "url": "https://data.cns11643.gov.tw/opendata/Properties.zip"
+    },
+    {
+      "path": "sources/cns11643/Properties/CNS_phonetic.txt",
+      "bytes": 1964298,
+      "sha256": "adc2f2e71270e7b971fa5b51fb4dff49ddced986e6e9f06de1ee88394449c8e2",
+      "url": "https://data.cns11643.gov.tw/opendata/Properties.zip#CNS_phonetic.txt"
+    },
+    {
+      "path": "sources/cns11643/Properties/CNS_pinyin_1.txt",
+      "bytes": 52141,
+      "sha256": "84f4d968b66844d48ee46a368cd20881e5a067e0905d718ac1a3fd5a762fb2a9",
+      "url": "https://data.cns11643.gov.tw/opendata/Properties.zip#CNS_pinyin_1.txt"
+    },
+    {
+      "path": "sources/cns11643/Properties/CNS_pinyin_2.txt",
+      "bytes": 53126,
+      "sha256": "9db66b4fe44d94a5d5193f850b8de6e2a1620b63e21fc5d1e46b76527e844c67",
+      "url": "https://data.cns11643.gov.tw/opendata/Properties.zip#CNS_pinyin_2.txt"
+    },
+    {
+      "path": "sources/cns11643/release.txt",
+      "bytes": 3058,
+      "sha256": "0dba50d5b4858917bba844d59e60368c9370d1f70994fb9fc75774afde223920",
+      "url": "https://data.cns11643.gov.tw/opendata/release.txt"
+    },
+    {
+      "path": "sources/pinyin-data/.bumpversion.cfg",
+      "bytes": 131,
+      "sha256": "d9a3529ac50c1b24cd12e57c5e30e0c25309abd96749d62ae3a1ab4648a1b854",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/.bumpversion.cfg"
+    },
+    {
+      "path": "sources/pinyin-data/.github/workflows/python-app.yml",
+      "bytes": 779,
+      "sha256": "a550c6f6aea84089126f95029243ffb30985981157d4e420bf5a34c57b857e12",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/.github/workflows/python-app.yml"
+    },
+    {
+      "path": "sources/pinyin-data/.gitignore",
+      "bytes": 784,
+      "sha256": "22ae6346060e54d550c867014caf2fa0652c78b139744f109d17dc197b315c2d",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/.gitignore"
+    },
+    {
+      "path": "sources/pinyin-data/.gitmodules",
+      "bytes": 247,
+      "sha256": "9267fc15c5f4aceb16856ea6cc0cffb662f52106572147af9a38d32652036994",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/.gitmodules"
+    },
+    {
+      "path": "sources/pinyin-data/.travis.yml",
+      "bytes": 66,
+      "sha256": "29cc13163b7144f6e7e301c7e20b3b1879a190bf598780c0ccb4061a6f37d247",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/.travis.yml"
+    },
+    {
+      "path": "sources/pinyin-data/CHANGELOG.md",
+      "bytes": 6567,
+      "sha256": "7fd803357dfe9f125068d30cf61bde8eb76372ca040ff8ed5a95f82de230f977",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/CHANGELOG.md"
+    },
+    {
+      "path": "sources/pinyin-data/GBK_PUA.txt",
+      "bytes": 3309,
+      "sha256": "9eb3deae21f7c9612901dd0099dc890948bda96a360a9315b3906ff65f163a46",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/GBK_PUA.txt"
+    },
+    {
+      "path": "sources/pinyin-data/LICENSE",
+      "bytes": 1076,
+      "sha256": "9c048697be2502a16e8bcb282d5d465a07295b2def0ffb05a269c5d39dbe1586",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/LICENSE"
+    },
+    {
+      "path": "sources/pinyin-data/Makefile",
+      "bytes": 522,
+      "sha256": "b3e78ba1f2b6bb604a8f9db6eb650a6b03dffb0c1142da5fe9006a19f1ead479",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/Makefile"
+    },
+    {
+      "path": "sources/pinyin-data/README.md",
+      "bytes": 4956,
+      "sha256": "864b2e4f9e4dbdb01bfa32892b78c25bd982eb45fa6faf1d6c701be3d3f707d3",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/README.md"
+    },
+    {
+      "path": "sources/pinyin-data/cc_cedict.txt",
+      "bytes": 131699,
+      "sha256": "682cf58e42ad25f4c3da670dddc426e23b450ae5b7194db206f7bd6445884434",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/cc_cedict.txt"
+    },
+    {
+      "path": "sources/pinyin-data/kHanyuPinlu.txt",
+      "bytes": 78922,
+      "sha256": "260ef08aef066ae5e798ed9933e305094d03a87a5d0bcbced6d740cb9084f2f8",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/kHanyuPinlu.txt"
+    },
+    {
+      "path": "sources/pinyin-data/kHanyuPinyin.txt",
+      "bytes": 766768,
+      "sha256": "edb91d53e81b158242ecc2ea779c70a4ae9391054300eafe7fa60d18ad237504",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/kHanyuPinyin.txt"
+    },
+    {
+      "path": "sources/pinyin-data/kMandarin.txt",
+      "bytes": 925875,
+      "sha256": "643c38f4a533ac6f25d16390c3b09df41bac8e8f476da88cd18371fdb299198a",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/kMandarin.txt"
+    },
+    {
+      "path": "sources/pinyin-data/kMandarin_8105.txt",
+      "bytes": 168058,
+      "sha256": "1b1546f6e190c0f1cbf23e3bb436b41c3ace16f852be4daebc2c7295636628a4",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/kMandarin_8105.txt"
+    },
+    {
+      "path": "sources/pinyin-data/kMandarin_overwrite.txt",
+      "bytes": 1445,
+      "sha256": "2aeaffe532e90cb7f56af9121a016d2b2041712b0f18bb0e03a5040d78a1ea22",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/kMandarin_overwrite.txt"
+    },
+    {
+      "path": "sources/pinyin-data/kTGHZ2013.txt",
+      "bytes": 166509,
+      "sha256": "83be5ecdfe0b8fcc1202ae45882a2f983c013db87ba68369d94a4dad775382bb",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/kTGHZ2013.txt"
+    },
+    {
+      "path": "sources/pinyin-data/kXHC1983.txt",
+      "bytes": 230280,
+      "sha256": "7ade5b5750c92d39dec2151075ebcca323afe6af452349f54438d950b1dd4eeb",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/kXHC1983.txt"
+    },
+    {
+      "path": "sources/pinyin-data/kanji.txt",
+      "bytes": 762,
+      "sha256": "03767485ced0da00f7c2b50413d3b78a2450ab0d914c2eef8933e98cd2ad8ebf",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/kanji.txt"
+    },
+    {
+      "path": "sources/pinyin-data/merge_unihan.py",
+      "bytes": 4358,
+      "sha256": "eb618afb1185b64bf79d33b3be5c7f322230771553b699e42c404ac21f0d1a36",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/merge_unihan.py"
+    },
+    {
+      "path": "sources/pinyin-data/nonCJKUI.txt",
+      "bytes": 33,
+      "sha256": "f2b290f0e74c7797fa38528f7ee26638b48d70154e92445921c698261aecc9dc",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/nonCJKUI.txt"
+    },
+    {
+      "path": "sources/pinyin-data/overwrite.txt",
+      "bytes": 1673,
+      "sha256": "24eace6c32e766a26346d6cd769e89758c172712bdb1daed901816c2e647dd21",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/overwrite.txt"
+    },
+    {
+      "path": "sources/pinyin-data/pinyin.txt",
+      "bytes": 985553,
+      "sha256": "7365b877d2a60f64d13de522ad882ce928c7b60c4c5d26fe3c89783e72ab1115",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/pinyin.txt"
+    },
+    {
+      "path": "sources/pinyin-data/tools/china-8105-06062014.txt",
+      "bytes": 96464,
+      "sha256": "2a86c196f2d3b35610597f550bc7a9c3377ac0e9a93bf41dae6feea07c35cbc3",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/tools/china-8105-06062014.txt"
+    },
+    {
+      "path": "sources/pinyin-data/tools/gen_8105.py",
+      "bytes": 1354,
+      "sha256": "6721df5a7951d54e0109aa0e51a74c790f899cfa124bd8bc827ac9af03204d53",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/tools/gen_8105.py"
+    },
+    {
+      "path": "sources/pinyin-data/tools/gen_cc_cedict.py",
+      "bytes": 1230,
+      "sha256": "ad72f09f713bb563713e6b8950d6f8965bbffc8fd8f7d3111d6149f01689cc3f",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/tools/gen_cc_cedict.py"
+    },
+    {
+      "path": "sources/pinyin-data/tools/gen_gb_pua.py",
+      "bytes": 5904,
+      "sha256": "aafbac0d6c474da0757cc605437d3c40960a87938b3c034aaa50dddf3efdd3f5",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/tools/gen_gb_pua.py"
+    },
+    {
+      "path": "sources/pinyin-data/tools/improve_8105.py",
+      "bytes": 2638,
+      "sha256": "6c776b8a362b71565c0738ac07890a3c13eff6a92cc984730da7f8e9fc6cca02",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/tools/improve_8105.py"
+    },
+    {
+      "path": "sources/pinyin-data/tools/requirements.txt",
+      "bytes": 33,
+      "sha256": "d17b90272a6a42020f7d859c0e9d020021e4a457287db469891c7d496e817212",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/tools/requirements.txt"
+    },
+    {
+      "path": "sources/pinyin-data/unihan/.gitignore",
+      "bytes": 8,
+      "sha256": "09d8615bf479739f88e2655807ade7d7d46382718386f14e8888e381d5c2d408",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/unihan/.gitignore"
+    },
+    {
+      "path": "sources/pinyin-data/unihan/Makefile",
+      "bytes": 410,
+      "sha256": "a7f429d8aa2738b127c1803958a915d27945af58d3be61e6ceafb5b0a8f92cbd",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/unihan/Makefile"
+    },
+    {
+      "path": "sources/pinyin-data/unihan/README.md",
+      "bytes": 106,
+      "sha256": "4a648e2cfad2c779f9bd66ec32471c1dcb6a366dd7379a9e885c987c70a7a8f7",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/unihan/README.md"
+    },
+    {
+      "path": "sources/pinyin-data/unihan/diff.sh",
+      "bytes": 421,
+      "sha256": "f6d4b393d3f100919939adf209cece0ecd22be1bdc160ddb01c664174712d3e7",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/unihan/diff.sh"
+    },
+    {
+      "path": "sources/pinyin-data/unihan/parse_pinyin.py",
+      "bytes": 2907,
+      "sha256": "09bba81128a2fd0f68cac3bfac2b0ab658f5668eaa0a8f20ade9a31c5b93d6b6",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/unihan/parse_pinyin.py"
+    },
+    {
+      "path": "sources/pinyin-data/upstream.tar.gz",
+      "bytes": 1777007,
+      "sha256": "30c04fb4b6e6e65b13c735a1b3cd9b037737d885909e5406c086e007cedba146",
+      "url": "https://codeload.github.com/mozillazg/pinyin-data/tar.gz/9e5e9bdfe8add694300e0cc93a27b803b68377f9"
+    },
+    {
+      "path": "sources/pinyin-data/zdic.txt",
+      "bytes": 1656011,
+      "sha256": "14903e4160efe396074cf68cec233416c2bbec979983ba31b88554d0f030db8c",
+      "url": "https://github.com/mozillazg/pinyin-data/blob/9e5e9bdfe8add694300e0cc93a27b803b68377f9/zdic.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Blocks.txt",
+      "bytes": 11906,
+      "sha256": "a58f8d322f3c5e254f9f97b1cbf76a454a7e02de6ac35619a5e4f27aaabfd553",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Blocks.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/EquivalentUnifiedIdeograph.txt",
+      "bytes": 18371,
+      "sha256": "c86c80f6a0d1d47c9a5aadfbf1c26f1a732d662d9ccb0ed2d397919ecc47bf72",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/EquivalentUnifiedIdeograph.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/LICENSE.txt",
+      "bytes": 1995,
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+      "url": "https://www.unicode.org/license.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/PropList.txt",
+      "bytes": 149040,
+      "sha256": "f438f532e8737bb8a2702126cdf9c4af5e357c58c7acf9d9eb2fc7c1a1d955d6",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/PropList.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/ReadMe.txt",
+      "bytes": 729,
+      "sha256": "b0ea442f29dee90584aacd3665a6e1ce87ffc917a4d31f34e1916d2d6f7f9205",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/ReadMe.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Scripts.txt",
+      "bytes": 196089,
+      "sha256": "0071fd81b6aeae25f6e8bce8efec3066a6476a91b49bdb2f52dc76e817862a6a",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Scripts.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/UnicodeData.txt",
+      "bytes": 2243593,
+      "sha256": "0736451de439ae7baf1425136617da495e09ee5afbe6e394374db7009ea08950",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/UnicodeData.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan.zip",
+      "bytes": 8340649,
+      "sha256": "4c93ea9c1f636451729a840978f1667a53886af37ba854fdcce109721c63d43e",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan_DictionaryIndices.txt",
+      "bytes": 8921637,
+      "sha256": "b41c7c5ca3a01d833ed4fe0c7b9cdf41c4ec08cb11a0fd1df6e92ed666ce00e1",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_DictionaryIndices.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan_DictionaryLikeData.txt",
+      "bytes": 4129290,
+      "sha256": "cce221e3d4719c9fa7f0068d2a86bd0d8f3bf5725a21a77d00fc4f784d5520ed",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_DictionaryLikeData.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan_IRGSources.txt",
+      "bytes": 13379351,
+      "sha256": "e2c484cd22b54f7e0ce896ebb02f33e092b92325accf0fd55e0e14e3863869eb",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_IRGSources.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan_NumericValues.txt",
+      "bytes": 4990,
+      "sha256": "ea986cec09192efa3b527049fca964682b394d42b0ce0e15dbe1321dec2dc7e6",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_NumericValues.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan_OtherMappings.txt",
+      "bytes": 3715847,
+      "sha256": "fc7bbb8f923fa1e922a4d421aa15387d1c68250cc5e7619bdf81f575ab38472b",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_OtherMappings.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan_RadicalStrokeCounts.txt",
+      "bytes": 600881,
+      "sha256": "9330f089ebb61426b277951b319775aa6e3a3e56900f6381cab915891cd4fda9",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_RadicalStrokeCounts.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan_Readings.txt",
+      "bytes": 8844571,
+      "sha256": "9d39995b5de714e8ce93716ed5d15eaa0792d68e407cdf8a0add2893b8f4150b",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_Readings.txt"
+    },
+    {
+      "path": "sources/unicode-18.0.0/Unihan_Variants.txt",
+      "bytes": 726700,
+      "sha256": "4ccfd34b08ac7b9c14353f6668ba43e3796d85c4cdce7952b635be16015aafa2",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip#Unihan_Variants.txt"
+    },
+    {
+      "path": "sources/wanxiang/LICENSE",
+      "bytes": 18656,
+      "sha256": "9e5f1b3c610b9c2da5c313bf81d577a7d1acec686bdb0384edefa6df0f90cd94",
+      "url": "https://raw.githubusercontent.com/amzxyz/rime-wanxiang/429bca38cec288ca9f6c322333908ce17adb0885/LICENSE"
+    },
+    {
+      "path": "sources/wanxiang/README.md",
+      "bytes": 6753,
+      "sha256": "32af277792c7dab236d8fd39932f88dfa54626b1b3e2392b10ff21f76ea666b8",
+      "url": "https://raw.githubusercontent.com/amzxyz/rime-wanxiang/429bca38cec288ca9f6c322333908ce17adb0885/README.md"
+    },
+    {
+      "path": "sources/wanxiang/zi.dict.yaml",
+      "bytes": 616559,
+      "sha256": "7d2399aa659520dd4e1bd54e8dadced277ac25e342ccc9ca92714df0cb242a11",
+      "url": "https://raw.githubusercontent.com/amzxyz/rime-wanxiang/429bca38cec288ca9f6c322333908ce17adb0885/dicts/zi.dict.yaml"
+    }
+  ]
+}

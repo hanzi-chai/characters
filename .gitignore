@@ -1,0 +1,12 @@
+node_modules/
+*.tmp
+.DS_Store
+
+# Downloaded sources and generated artifacts stay local.
+/sources/
+/data/
+/dist/
+
+# Only the hand-written source notes belong in version control.
+/research/*
+!/research/SOURCES.md
