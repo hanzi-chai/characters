@@ -99,7 +99,7 @@ CI 从全新下载的原件构建，不自动执行网页增量采集，因此�
 | 来源 | 字符数 | 不同字音对 |
 |---|---:|---:|
 | CC-CEDICT:headword | 15157 | 16744 |
-| CNS11643:phonetic | 79203 | 98141 |
+| CNS11643:phonetic | 79203 | 98140 |
 | MOE:ja-hanzi-draft | 33 | 33 |
 | Unihan18:kHanyuPinlu | 4315 | 4972 |
 | Unihan18:kHanyuPinyin | 34885 | 46167 |
