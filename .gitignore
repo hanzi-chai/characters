@@ -2,6 +2,12 @@ node_modules/
 *.tmp
 .DS_Store
 
+# Share editor configuration even when .vscode is globally ignored.
+!/.vscode/
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/extensions.json
+
 # Downloaded sources and generated artifacts stay local.
 /sources/
 /data/

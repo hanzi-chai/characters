@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.14'
+
+      - name: Validate date tag
+        run: |
+          bun -e '
+            const tag = process.env.TAG ?? "";
+            const iso = `${tag.slice(0, 4)}-${tag.slice(4, 6)}-${tag.slice(6, 8)}`;
+            const date = new Date(`${iso}T00:00:00Z`);
+            if (!/^[0-9]{8}$/.test(tag) || !Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== iso) {
+              throw new Error(`Tag must be a valid YYYYMMDD date: ${tag}`);
+            }
+          '
+
+      - name: Install development dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check code
+        run: bun run check
+
+      - name: Download source originals
+        run: bun run download
+
+      - name: Build data and coverage
+        run: bun run build
+
+      - name: Upload assets and publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$TAG" --json isDraft > "$RUNNER_TEMP/release.json"; then
+            bun -e '
+              const release = await Bun.file(`${process.env.RUNNER_TEMP}/release.json`).json();
+              if (!release.isDraft) throw new Error("This release is already published; use a new date tag.");
+            '
+          else
+            gh release create "$TAG" --verify-tag --draft --title "$TAG" --notes-file README.md
+          fi
+          gh release upload "$TAG" data/pinyin.tsv data/evidence.jsonl data/coverage.json README.md --clobber
+          gh release edit "$TAG" --title "$TAG" --notes-file README.md --draft=false
