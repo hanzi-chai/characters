@@ -6,12 +6,12 @@
   "engines": { "bun": ">=1.3.0" },
   "scripts": {
     "download": "bun scripts/download.ts",
+    "collect:web": "bun scripts/collect-web.ts",
     "build": "bun scripts/build.ts",
     "verify": "bun scripts/verify.ts",
     "test": "bun test",
     "check": "bun test && bun scripts/verify.ts",
     "lookup": "bun scripts/lookup.ts",
-    "repro": "bun scripts/repro.ts",
-    "package": "bun scripts/package.ts"
+    "repro": "bun scripts/repro.ts"
   }
 }

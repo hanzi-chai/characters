@@ -4,7 +4,7 @@
 
 - 编程使用 TypeScript / Bun；无第三方运行时依赖，不执行上游快照中的 Python 脚本。
 - 读者需要的使用方式、来源、许可及覆盖率集中在根目录 README.md；不要恢复 research 目录或另建 COVERAGE.md、SOURCES.md、NOTICE.md。
-- 原始下载仅放在 sources/，生成数据仅放在 data/，打包结果仅放在 dist/；这三个目录不纳入 Git，不得用 git add -f 绕过忽略规则。
+- 原始下载仅放在 sources/，生成数据仅放在 data/，不生成发布压缩包；sources/、data/、dist/ 不纳入 Git，不得用 git add -f 绕过忽略规则。
 - sources.lock.json 是要跟踪的来源配置，保留 URL、版本及 SHA-256。移动原件只改路径，不改原始字节或校验和。
 
 ## 代码位置与领域约束
@@ -22,5 +22,5 @@
 - scripts/build.ts 通过 src/report.ts 更新 README 的 coverage:start / coverage:end 区段；改统计模板后运行构建，勿手工维持重复统计表。
 - data/coverage.json 是统计的机器可读来源；不再生成独立的可读覆盖率文件或相关符号分表，新增区块直接进入主表。
 - 修改范围或读音逻辑后运行 bun run build、bun run check、bun run repro。verify.ts 用 Unihan 八个文件及独立码点范围作对照，并检查全部来源指针与 README 统计同步。
-- 修改下载或路径时，使用已缓存原件运行 bun run download 验证锁文件及离线流程；修改打包时运行 bun run package 检查压缩包。
+- 修改下载或路径时，使用已缓存原件运行 bun run download 验证锁文件及离线流程。
 - 提交前运行 git diff --check，确认 git ls-files 中没有 sources/、data/、dist/ 文件。远端使用 SSH 别名 i：git@i:hanzi-chai/characters.git。

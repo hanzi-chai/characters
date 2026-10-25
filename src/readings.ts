@@ -1,13 +1,17 @@
 import { toNumericReading, toCnsNumeric, codepoint } from "./pinyin";
 import { cnsCodeFromTSource } from "./unicode";
+import { extractYedict } from "./yedict";
+import { extractZitools } from "./zitools";
+import type { SourceLock } from "./integrity";
 
 export interface Evidence {
   source: string; file: string; line: number; raw: string; pinyin: string; via?: string;
   cns?: string; bopomofo?: string;
   unicodeMapping?: { file: string; line: number };
   pronunciationMapping?: { file: string; line: number };
+  jsonPointer?: string;
 }
-export interface Rejected { codepoint: string; source: string; file: string; line: number; raw: string; reason: string }
+export interface Rejected { codepoint: string; source: string; file: string; line: number; raw: string; reason: string; jsonPointer?: string }
 export interface MappingConflict { cns: string; official: string[]; unihan: string; file: string; line: number }
 export interface Readings { evidence: Map<number, Evidence[]>; rejected: Rejected[]; corrections: Map<number, Set<string>>; mappingConflicts: MappingConflict[] }
 
@@ -62,6 +66,23 @@ export async function loadReadings(): Promise<Readings> {
     const [char, raw] = wanxiang[i].split("\t");
     if (!raw || [...char].length !== 1) continue;
     add(char.codePointAt(0)!, raw.split(";")[0], "wanxiang:zi", wanxiangFile, i + 1);
+  }
+  const lock: SourceLock = await Bun.file("sources.lock.json").json();
+  for (const { path: file } of lock.files) {
+    const match = file.match(/^sources\/(yedict|zitools)\/U([0-9A-F]{5})\.json$/);
+    if (!match) continue;
+    const cp = parseInt(match[2], 16);
+    const source = `${match[1]}:explicit-pinyin`;
+    const text = await Bun.file(file).text();
+    // The archived HTTP responses are one-line JSON, preserved byte for byte.
+    if (text.trimEnd().includes("\n")) throw new Error(`Expected one-line dictionary original: ${file}`);
+    try {
+      const result = (match[1] === "yedict" ? extractYedict : extractZitools)(text, cp);
+      for (const reading of result.readings) add(cp, reading.raw, source, file, 1, { jsonPointer: reading.jsonPointer });
+      for (const item of result.rejected) rejected.push({ ...item, codepoint: codepoint(cp), source, file, line: 1 });
+    } catch (error) {
+      rejected.push({ codepoint: codepoint(cp), source, file, line: 1, raw: "", reason: String(error) });
+    }
   }
   // Official CNS join: CNS code → Unicode, CNS code → Bopomofo,
   // Bopomofo → the Han (Hanyu Pinyin) column. No hand-made tone conversion.
@@ -148,6 +169,8 @@ export async function loadReadings(): Promise<Readings> {
     if (entry.source === "pinyin-data:zdic") return 5;
     if (entry.source === "pinyin-data:cc_cedict") return 6;
     if (entry.source === "wanxiang:zi") return 7;
+    if (entry.source === "yedict:explicit-pinyin") return 8;
+    if (entry.source === "zitools:explicit-pinyin") return 9;
     return 4;
   };
   for (const entries of evidence.values()) entries.sort((a, b) => rank(a) - rank(b));

@@ -1,6 +1,6 @@
 import { mkdir, rm } from "node:fs/promises";
 import { codepoint } from "../src/pinyin";
-import { parseBlocks, parseUnicodeData, propertySet, hanRepertoire, includedBlocks, singleHanDecomposition } from "../src/unicode";
+import { parseBlocks, parseUnicodeData, propertySet, hanRepertoire, includedBlocks, blockLabel, singleHanDecomposition } from "../src/unicode";
 import { loadReadings, type Evidence } from "../src/readings";
 import { sha256, verifySources } from "../src/integrity";
 import { unicodeVersion } from "../src/sources";
@@ -13,6 +13,8 @@ const unified = propertySet(await Bun.file(prefix + "PropList.txt").text(), "Uni
 const blocks = parseBlocks(await Bun.file(prefix + "Blocks.txt").text());
 for (const selected of includedBlocks) if (!blocks.some(block => block.name === selected.name)) throw new Error(`Missing Unicode block: ${selected.name}`);
 const repertoire = hanRepertoire(unicode, unified, blocks);
+const outputBlocks = blocks.filter(block => repertoire.some(cp => cp >= block.start && cp <= block.end))
+  .map(block => ({ ...block, name: blockLabel(block.name) }));
 const { evidence, rejected, corrections, mappingConflicts } = await loadReadings();
 
 export interface Row {
@@ -44,10 +46,12 @@ function rowFor(cp: number, visiting = new Set<number>()): Row {
     }
   }
   const pinyin = [...new Set(selected.map(e => e.pinyin))];
+  const block = outputBlocks.find(b => cp >= b.start && cp <= b.end);
+  if (!block) throw new Error(`Missing Unicode block for ${codepoint(cp)}`);
   const row: Row = {
-    codepoint: codepoint(cp), char: String.fromCodePoint(cp), pinyin: pinyin.length ? pinyin : ["xxx"],
-    default: pinyin[0] ?? "xxx", status,
-    block: blocks.find(b => cp >= b.start && cp <= b.end)?.name ?? "No_Block",
+    codepoint: codepoint(cp), char: String.fromCodePoint(cp), pinyin: pinyin.length ? pinyin : ["?"],
+    default: pinyin[0] ?? "?", status,
+    block: block.name,
     evidence: selected, excludedByCorrection,
   };
   memo.set(cp, row);
@@ -61,9 +65,9 @@ function tsv(data: Row[]): string {
     [...new Set(row.evidence.map(e => e.via ? `UnicodeData:${row.codepoint}->${e.via};${e.source}` : e.source))].join("|"),
   ].join("\t")).join("\n") + "\n";
 }
-const unknown = rows.filter(row => row.status === "missing");
-const supplemental = rows.filter(row => row.evidence.some(e => /^(pinyin-data:(zdic|cc_cedict)|wanxiang:)/.test(e.source)) && !row.evidence.some(e => e.source === "pinyin-data:pinyin" || e.source.startsWith("Unihan18:") || e.source.startsWith("CNS11643:")));
-const disagreements = rows.filter(row => {
+const missing = rows.filter(row => row.status === "missing").length;
+const supplementOnly = rows.filter(row => row.evidence.some(e => /^(pinyin-data:(zdic|cc_cedict)|wanxiang:|yedict:|zitools:)/.test(e.source)) && !row.evidence.some(e => e.source === "pinyin-data:pinyin" || e.source.startsWith("Unihan18:") || e.source.startsWith("CNS11643:"))).length;
+const sourceDisagreements = rows.filter(row => {
   const sets = new Map<string, Set<string>>();
   for (const e of row.evidence) {
     if (e.source.startsWith("pinyin-data:") && !["pinyin-data:pinyin", "pinyin-data:zdic", "pinyin-data:cc_cedict"].includes(e.source)) continue;
@@ -71,8 +75,8 @@ const disagreements = rows.filter(row => {
     sets.get(e.source)!.add(e.pinyin);
   }
   return new Set([...sets.values()].map(s => [...s].sort().join(","))).size > 1;
-});
-const byBlock = blocks.flatMap(block => {
+}).length;
+const byBlock = outputBlocks.flatMap(block => {
   const chars = rows.filter(row => row.block === block.name);
   return chars.length ? [{ block: block.name, start: codepoint(block.start), end: codepoint(block.end),
     total: chars.length, known: chars.filter(row => row.status !== "missing").length,
@@ -85,27 +89,20 @@ const bySource = [...new Set(rows.flatMap(row => row.evidence.map(e => e.source)
 }));
 const outputs: Record<string, string> = {
   "data/pinyin.tsv": tsv(rows),
-  "data/pinyin.txt": rows.map(row => `${row.char}\t${row.pinyin.join(",")}`).join("\n") + "\n",
-  "data/pinyin-default.txt": rows.map(row => `${row.char}\t${row.default}`).join("\n") + "\n",
-  "data/pinyin.json": JSON.stringify(Object.fromEntries(rows.map(row => [row.char, row.pinyin])), null, 2) + "\n",
   "data/evidence.jsonl": rows.map(row => JSON.stringify(row)).join("\n") + "\n",
-  "data/missing.tsv": tsv(unknown),
-  "data/supplement-only.tsv": tsv(supplemental),
-  "data/source-disagreements.tsv": tsv(disagreements),
   "data/rejected-readings.jsonl": rejected.map(row => JSON.stringify(row)).join("\n") + "\n",
   "data/cns-mapping-conflicts.json": JSON.stringify(mappingConflicts, null, 2) + "\n",
 };
 const summary = {
-  schema: 2, unicodeVersion, sourceDate: lock.collectedOn,
+  schema: 3, unicodeVersion, sourceDate: lock.collectedOn,
   scope: "Unified_Ideograph + U+3007 + assigned characters in the eight included CJK blocks (deduplicated)",
-  includedBlocks,
-  total: rows.length, known: rows.length - unknown.length, missing: unknown.length,
-  coveragePercent: Number((100 * (rows.length - unknown.length) / rows.length).toFixed(4)),
+  includedBlocks: includedBlocks.map(({ label }) => ({ name: label })),
+  total: rows.length, known: rows.length - missing, missing,
+  coveragePercent: Number((100 * (rows.length - missing) / rows.length).toFixed(4)),
   direct: rows.filter(row => row.status === "direct").length,
   inheritedViaUnicodeDecomposition: rows.filter(row => row.status === "unicode-decomposition").length,
   polyphonic: rows.filter(row => row.pinyin.length > 1).length,
-  supplementOnly: supplemental.length,
-  sourceDisagreements: disagreements.length,
+  supplementOnly, sourceDisagreements,
   rejectedReadings: rejected.length,
   cnsMappingConflicts: mappingConflicts.length,
   excludedByExplicitCorrection: rows.reduce((sum, row) => sum + row.excludedByCorrection.length, 0),
@@ -116,7 +113,11 @@ const summary = {
 outputs["data/coverage.json"] = JSON.stringify(summary, null, 2) + "\n";
 for (const [path, text] of Object.entries(outputs)) await Bun.write(path, text);
 await Bun.write("README.md", withCoverage(await Bun.file("README.md").text(), renderCoverage(summary)));
-for (const obsolete of ["data/COVERAGE.md", "data/related-han-symbols.tsv"]) await rm(obsolete, { force: true });
+for (const obsolete of [
+  "data/COVERAGE.md", "data/related-han-symbols.tsv",
+  "data/pinyin.txt", "data/pinyin-default.txt", "data/pinyin.json", "data/missing.tsv",
+  "data/source-disagreements.tsv", "data/supplement-only.tsv",
+]) await rm(obsolete, { force: true });
 const checksums = Object.entries(outputs).map(([path, text]) => ({ path, bytes: Buffer.byteLength(text), sha256: sha256(text) }));
 await Bun.write("data/manifest.json", JSON.stringify({ schema: 1, unicodeVersion, sourceLockSha256: sha256(await Bun.file("sources.lock.json").text()), files: checksums }, null, 2) + "\n");
 console.log(JSON.stringify({ total: summary.total, known: summary.known, missing: summary.missing, coveragePercent: summary.coveragePercent, inherited: summary.inheritedViaUnicodeDecomposition, rejected: summary.rejectedReadings }, null, 2));

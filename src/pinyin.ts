@@ -54,6 +54,10 @@ export function toNumeric(input: string): string {
 /** A rare polysyllabic character is one reading: 千瓦合字 → qian1-wa3. */
 export function toNumericReading(input: string): string {
   try { return toNumeric(input); } catch (originalError) {
+    // Explicit numeric tones delimit the syllables without guessing a boundary.
+    const numeric = input.trim().toLowerCase();
+    const parts = numeric.match(/[a-züvê:]+[0-5]/g) ?? [];
+    if (parts.length > 1 && parts.join("") === numeric.replace(/[-'\s]/g, "")) return parts.map(toNumeric).join("-");
     const chars = [...input.trim().toLowerCase().normalize("NFC")];
     const countTones = (text: string) => [...text.normalize("NFD")].filter(ch => /[\u0300\u0301\u0304\u030c]/u.test(ch)).length;
     if (countTones(input) < 2) throw originalError;

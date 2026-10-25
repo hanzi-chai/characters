@@ -14,6 +14,15 @@ export const includedBlocks = [
   { name: "Enclosed Ideographic Supplement", label: "中日韩带圈文字补充" },
 ] as const;
 
+export function blockLabel(name: string): string {
+  const included = includedBlocks.find(block => block.name === name);
+  if (included) return included.label;
+  if (name === "CJK Unified Ideographs") return "中日韩统一表意文字";
+  const extension = name.match(/^CJK Unified Ideographs Extension ([A-J])$/);
+  if (extension) return `中日韩统一表意文字扩展 ${extension[1]}`;
+  throw new Error(`Missing Chinese block name: ${name}`);
+}
+
 export function singleHanDecomposition(entry: UnicodeChar, unified: Set<number>): number | undefined {
   const value = entry.decomposition.replace(/^<[^>]+>\s*/, "");
   if (!/^[0-9A-F]{4,6}$/.test(value)) return undefined;
